@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>웹소켓을 통한 이미지 반전 예제</title>
+</head>
+<body>
+    <h2>이미지 전송 및 표시</h2>
+    <input type="file" id="imageInput" accept="image/png, image/jpeg">
+    <button onclick="sendImage()">이미지 전송</button>
+    <br>
+    <img id="flippedImage" src="" alt="플립된 이미지가 여기에 표시됩니다.", width=30%, height=30%>
+
+    <script>
+        var websocket = new WebSocket("ws://localhost:8000/ws/image");
+
+        websocket.onmessage = function(event) {
+            var flippedImage = document.getElementById('flippedImage');
+            flippedImage.src = 'data:image/jpeg;base64,' + event.data;
+        };
+
+        function sendImage() {
+            var fileInput = document.getElementById('imageInput');
+            if(fileInput.files.length > 0) {
+                var file = fileInput.files[0];
+                var reader = new FileReader();
+
+                reader.onload = function(event) {
+                    websocket.send(event.target.result);
+                };
+
+                reader.readAsArrayBuffer(file);
+            } else {
+                console.log("No file selected");
+            }
+        }
+    </script>
+</body>
+</html>

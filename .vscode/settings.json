@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:fastapi_project1}/fastapi_database.db",
+            "name": "fastapi_database"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
